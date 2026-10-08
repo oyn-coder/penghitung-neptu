@@ -1,94 +1,210 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>Belajar Online</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background: #f0f8ff;
-        }
-        header {
-            background: #4CAF50;
-            color: white;
-            padding: 15px;
-            text-align: center;
-        }
-        nav {
-            background: #333;
-            padding: 10px;
-            text-align: center;
-        }
-        nav a {
-            color: white;
-            margin: 0 10px;
-            text-decoration: none;
-        }
-        nav a:hover {
-            text-decoration: underline;
-        }
-        .container {
-            padding: 20px;
-        }
-        .card {
-            background: white;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
-        }
-        button {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        button:hover {
-            background: #45a049;
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Penghitung Neptu dan Kecocokan Weton</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Karla:wght@400;500;700&display=swap">
+<style>
+:root{
+  --bg:#f6ecd9; --surface:#fffaf0; --ink:#3b2416; --muted:#7a5d46; --line:#e2cfa9;
+  --wood:#4a2c1a; --wood2:#6b4128; --gold:#c8962e; --gold-soft:#f1dfae; --on-wood:#f6ecd9;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#24150d; --surface:#33201400; --surface:#3a2416; --ink:#f3e6cc; --muted:#c9ad88; --line:#5b3d27;
+  --wood:#150b06; --wood2:#2b1a10; --gold:#e0b04a; --gold-soft:#4d3718; --on-wood:#f3e6cc;}}
+:root[data-theme="dark"]{--bg:#24150d;--surface:#3a2416;--ink:#f3e6cc;--muted:#c9ad88;--line:#5b3d27;--wood:#150b06;--wood2:#2b1a10;--gold:#e0b04a;--gold-soft:#4d3718;--on-wood:#f3e6cc}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.65 Karla,system-ui,sans-serif}
+h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;margin:0;line-height:1.15}
+header{background:var(--wood);color:var(--on-wood);text-align:center;padding:3rem 1.25rem 4.5rem;
+  background-image:radial-gradient(circle at 1px 1px,rgba(200,150,46,.22) 1px,transparent 0);background-size:18px 18px}
+header svg{width:84px;height:84px;margin-bottom:.75rem}
+header h1{font-size:clamp(2rem,6vw,3.2rem);font-weight:700;letter-spacing:.01em}
+header p{max-width:34rem;margin:.75rem auto 0;color:var(--gold-soft);opacity:.9}
+main{max-width:46rem;margin:-2.5rem auto 3rem;padding:0 1rem}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.5rem;margin-bottom:1.25rem;box-shadow:0 10px 30px -18px rgba(59,36,22,.5)}
+.panel h2{font-size:1.7rem;color:var(--wood2);margin-bottom:.25rem}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .panel h2{color:var(--gold)}}
+.sub{color:var(--muted);margin:0 0 1rem}
+label{display:block;font-weight:700;margin-bottom:.35rem}
+.row{display:flex;gap:.75rem;flex-wrap:wrap;align-items:flex-end}
+.row>div{flex:1 1 13rem}
+input[type=date]{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:.7rem .85rem}
+input[type=date]:focus,button:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+button.go{font:700 1rem Karla,sans-serif;background:var(--wood);color:var(--on-wood);border:0;border-radius:10px;padding:.8rem 1.4rem;cursor:pointer;flex:0 0 auto;transition:background .2s}
+button.go:hover{background:var(--wood2)}
+.msg{color:#a3361f;font-weight:500;margin:.75rem 0 0;min-height:1.2em}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .msg{color:#ff9d84}}
+.result{margin-top:1.25rem;border:1.5px solid var(--gold);border-radius:12px;background:linear-gradient(180deg,var(--gold-soft),transparent 70%);padding:1.25rem;animation:rise .35s ease}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.result[hidden]{display:none}
+.weton{font-size:clamp(2rem,7vw,2.8rem);font-weight:700;color:var(--wood2)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .weton{color:var(--gold)}}
+.date{color:var(--muted);margin:.1rem 0 1rem}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-bottom:1rem}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:.6rem;text-align:center}
+.stat b{display:block;font:700 1.7rem "Cormorant Garamond",serif;color:var(--gold)}
+.stat span{font-size:.85rem;color:var(--muted)}
+.result h3{font-size:1.25rem;margin-bottom:.25rem}
+.result p{margin:0 0 .5rem}
+details{margin-top:0}
+summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;font:700 1.7rem "Cormorant Garamond",serif;color:var(--wood2)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) summary{color:var(--gold)}}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:1.8rem;color:var(--gold);transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+details .sub{margin-top:.25rem}
+.verdict{font-size:2.2rem;font-weight:700;color:var(--wood2)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .verdict{color:var(--gold)}}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:.75rem 0}
+.pair .stat b{font-size:1.3rem;color:var(--ink)}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 1.25rem 2rem;max-width:40rem;margin:0 auto}
+@media (max-width:420px){.stats{grid-template-columns:1fr 1fr}.panel{padding:1.15rem}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
 </head>
 <body>
-
 <header>
-    <h1>Platform Belajar Online</h1>
-    <p>Belajar jadi lebih mudah dan menyenangkan</p>
+  <svg viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="#c8962e" stroke-width="2">
+    <circle cx="50" cy="50" r="44"/><circle cx="50" cy="50" r="30" stroke-dasharray="2 4"/>
+    <path d="M50 6v88M6 50h88"/><rect x="31" y="31" width="38" height="38" transform="rotate(45 50 50)"/>
+    <circle cx="50" cy="50" r="6" fill="#c8962e"/>
+  </svg>
+  <h1>Penghitung Neptu dan Kecocokan Weton</h1>
+  <p>Temukan hari dan pasaran lahirmu, hitung neptunya, lalu lihat kecocokan dengan pasangan menurut primbon Jawa.</p>
 </header>
 
-<nav>
-    <a href="#">Beranda</a>
-    <a href="#">Materi</a>
-    <a href="#">Kontak</a>
-</nav>
-
-<div class="container">
-    <div class="card">
-        <h2>Materi HTML Dasar</h2>
-        <p>Pelajari dasar-dasar HTML untuk membuat website.</p>
-        <button onclick="tampilPesan()">Mulai Belajar</button>
+<main>
+  <section class="panel" aria-labelledby="t1">
+    <h2 id="t1">Weton Saya</h2>
+    <p class="sub">Pilih tanggal lahirmu untuk melihat weton dan wataknya.</p>
+    <div class="row">
+      <div><label for="lahir">Pilih Tanggal Lahir</label><input type="date" id="lahir"></div>
+      <button class="go" id="btnSaya" type="button">Cek Weton Saya</button>
     </div>
-
-    <div class="card">
-        <h2>Materi CSS Dasar</h2>
-        <p>Belajar cara mempercantik tampilan website.</p>
-        <button onclick="tampilPesan()">Mulai Belajar</button>
+    <p class="msg" id="msg1" role="alert"></p>
+    <div class="result" id="hasil1" hidden>
+      <div class="weton" id="wetonSaya"></div>
+      <p class="date" id="tglSaya"></p>
+      <div class="stats">
+        <div class="stat"><b id="nHari"></b><span id="lHari"></span></div>
+        <div class="stat"><b id="nPas"></b><span id="lPas"></span></div>
+        <div class="stat"><b id="nTotal"></b><span>Total neptu</span></div>
+      </div>
+      <h3>Watak dan karakter dasar</h3>
+      <p id="watak"></p>
+      <p class="sub" id="catatan" style="margin:0"></p>
     </div>
+  </section>
 
-    <div class="card">
-        <h2>Materi JavaScript</h2>
-        <p>Buat website jadi interaktif dengan JavaScript.</p>
-        <button onclick="tampilPesan()">Mulai Belajar</button>
-    </div>
-</div>
+  <section class="panel">
+    <details id="acc">
+      <summary>Cek Kecocokan dengan Pasangan</summary>
+      <p class="sub">Memakai tanggal lahirmu di atas, ditambah tanggal lahir pasanganmu.</p>
+      <div class="row">
+        <div><label for="pasangan">Tanggal Lahir Pasangan</label><input type="date" id="pasangan"></div>
+        <button class="go" id="btnCocok" type="button">Cek Kecocokan</button>
+      </div>
+      <p class="msg" id="msg2" role="alert"></p>
+      <div class="result" id="hasil2" hidden>
+        <div class="pair">
+          <div class="stat"><span>Kamu</span><b id="pA"></b><span id="pAn"></span></div>
+          <div class="stat"><span>Pasangan</span><b id="pB"></b><span id="pBn"></span></div>
+        </div>
+        <p class="date" id="hitung"></p>
+        <div class="verdict" id="kategori"></div>
+        <p id="deskripsi"></p>
+      </div>
+    </details>
+  </section>
+</main>
+
+<footer>Hasil ini berasal dari tradisi primbon Jawa dan bersifat hiburan serta refleksi budaya, bukan penentu nasib. Kecocokan sejati dibangun dua orang.</footer>
 
 <script>
-function tampilPesan() {
-    alert("Fitur pembelajaran akan segera tersedia!");
-}
-</script>
+const HARI = ["Ahad","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+const NEPTU_HARI = [5,4,3,7,8,6,9];
+const PASARAN = ["Legi","Pahing","Pon","Wage","Kliwon"];
+const NEPTU_PASARAN = [5,9,7,4,8];
+const BULAN = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
 
+/* 1 Januari 1970 adalah Kamis Wage; 17 Agustus 1945 (Jumat Legi) dipakai sebagai verifikasi. */
+function hitungWeton(str){
+  const [y,m,d] = str.split("-").map(Number);
+  const utc = Date.UTC(y, m-1, d);
+  const hari = Math.floor(utc/86400000);
+  const iHari = new Date(utc).getUTCDay();
+  const iPas = (((hari + 3) % 5) + 5) % 5;
+  return {
+    y,m,d, hari: HARI[iHari], pasaran: PASARAN[iPas],
+    nHari: NEPTU_HARI[iHari], nPas: NEPTU_PASARAN[iPas],
+    total: NEPTU_HARI[iHari] + NEPTU_PASARAN[iPas]
+  };
+}
+
+const WATAK = {
+  7:"Tenang, sederhana, dan tidak suka pamer. Kamu pekerja yang telaten, kadang terlalu merendah sehingga kemampuanmu kurang terlihat.",
+  8:"Lembut dan penuh perhatian. Orang mudah curhat padamu, tetapi kamu perlu belajar berkata tidak.",
+  9:"Ramah dan mudah bergaul. Idemu banyak, namun perlu ketekunan agar tidak berhenti di tengah jalan.",
+  10:"Cerdas, cepat menangkap hal baru, dan punya rasa ingin tahu besar. Jaga agar tidak mudah bosan.",
+  11:"Mandiri dan pekerja keras. Kamu teguh pada pendirian, sesekali terlalu keras pada diri sendiri.",
+  12:"Seimbang dan bijaksana. Kamu pandai menengahi perselisihan dan dipercaya orang sekitar.",
+  13:"Hangat, murah hati, dan setia kawan. Rezekimu mengalir lewat hubungan baik dengan banyak orang.",
+  14:"Berwibawa dan punya naluri memimpin. Pastikan ketegasanmu tetap diimbangi mendengarkan.",
+  15:"Pandai mengatur dan berpikir jauh ke depan. Kamu cocok mengelola hal besar dengan perencanaan matang.",
+  16:"Kuat, berani, dan tahan banting. Semangatmu menular, meski emosi perlu dikelola saat tertekan.",
+  17:"Berjiwa luas, dermawan, dan disegani. Kamu sering menjadi tempat bersandar bagi keluarga.",
+  18:"Penuh daya dan karisma. Cita-citamu tinggi dan tekadmu besar, jaga kerendahan hati agar langkahmu makin mantap."
+};
+
+const JODOH = {
+  1:["Pegat","Hubungan perlu kerja ekstra. Primbon mengingatkan potensi perbedaan besar, jadi komunikasi terbuka dan saling mengalah sangat berperan."],
+  2:["Ratu","Pasangan yang disegani dan dihormati lingkungan. Rumah tangga cenderung berwibawa dan membawa nama baik."],
+  3:["Jodoh","Cocok dan saling melengkapi. Primbon menyebut hubungan ini mudah selaras dan langgeng."],
+  4:["Topo","Awalnya penuh ujian, tetapi dengan kesabaran hasilnya manis. Kebahagiaan datang setelah bersama melewati masa sulit."],
+  5:["Tinari","Rezeki dan kebahagiaan mengalir. Pasangan ini dipercaya mudah mendapat kemudahan dalam hidup."],
+  6:["Padu","Cocok, meski kadang ada perselisihan kecil. Sebagian besar bisa selesai dengan bicara baik-baik."],
+  7:["Sujanan","Ada godaan atau cekcok dari luar. Kejujuran dan saling percaya menjadi kunci menjaga hubungan."],
+  0:["Pesthi","Sangat harmonis, tenteram, dan damai. Ini kategori paling baik dalam hitungan ini."]
+};
+
+const $ = id => document.getElementById(id);
+const fmt = w => `${w.d} ${BULAN[w.m-1]} ${w.y}`;
+const valid = s => s && !isNaN(Date.parse(s));
+
+$("btnSaya").addEventListener("click", () => {
+  const v = $("lahir").value;
+  $("msg1").textContent = "";
+  if(!valid(v)){ $("msg1").textContent = "Pilih tanggal lahir terlebih dahulu."; $("hasil1").hidden = true; return; }
+  const w = hitungWeton(v);
+  $("wetonSaya").textContent = `${w.hari} ${w.pasaran}`;
+  $("tglSaya").textContent = `Lahir pada ${fmt(w)}`;
+  $("nHari").textContent = w.nHari; $("lHari").textContent = `Neptu ${w.hari}`;
+  $("nPas").textContent = w.nPas;  $("lPas").textContent = `Neptu ${w.pasaran}`;
+  $("nTotal").textContent = w.total;
+  $("watak").textContent = WATAK[w.total];
+  $("catatan").textContent = "Pembagian hari lahir mengikuti kalender Masehi tengah malam. Jika lahir setelah magrib, sebagian tradisi menghitungnya sebagai hari berikutnya.";
+  $("hasil1").hidden = false;
+});
+
+$("btnCocok").addEventListener("click", () => {
+  const a = $("lahir").value, b = $("pasangan").value;
+  $("msg2").textContent = "";
+  if(!valid(a)){ $("msg2").textContent = "Isi dulu tanggal lahirmu di bagian Weton Saya."; $("hasil2").hidden = true; return; }
+  if(!valid(b)){ $("msg2").textContent = "Pilih tanggal lahir pasangan terlebih dahulu."; $("hasil2").hidden = true; return; }
+  const A = hitungWeton(a), B = hitungWeton(b);
+  const sum = A.total + B.total, sisa = sum % 8;
+  const [nama, desk] = JODOH[sisa];
+  $("pA").textContent = `${A.hari} ${A.pasaran}`; $("pAn").textContent = `Neptu ${A.total}`;
+  $("pB").textContent = `${B.hari} ${B.pasaran}`; $("pBn").textContent = `Neptu ${B.total}`;
+  $("hitung").textContent = `${A.total} + ${B.total} = ${sum}, sisa bagi 8 = ${sisa === 0 ? "0 (dihitung 8)" : sisa}`;
+  $("kategori").textContent = nama;
+  $("deskripsi").textContent = desk;
+  $("hasil2").hidden = false;
+});
+</script>
 </body>
 </html>
