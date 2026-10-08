@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Belajar Online</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f0f8ff;
+        }
+        header {
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        nav {
+            background: #333;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Platform Belajar Online</h1>
+    <p>Belajar jadi lebih mudah dan menyenangkan</p>
+</header>
+
+<nav>
+    <a href="#">Beranda</a>
+    <a href="#">Materi</a>
+    <a href="#">Kontak</a>
+</nav>
+
+<div class="container">
+    <div class="card">
+        <h2>Materi HTML Dasar</h2>
+        <p>Pelajari dasar-dasar HTML untuk membuat website.</p>
+        <button onclick="tampilPesan()">Mulai Belajar</button>
+    </div>
+
+    <div class="card">
+        <h2>Materi CSS Dasar</h2>
+        <p>Belajar cara mempercantik tampilan website.</p>
+        <button onclick="tampilPesan()">Mulai Belajar</button>
+    </div>
+
+    <div class="card">
+        <h2>Materi JavaScript</h2>
+        <p>Buat website jadi interaktif dengan JavaScript.</p>
+        <button onclick="tampilPesan()">Mulai Belajar</button>
+    </div>
+</div>
+
+<script>
+function tampilPesan() {
+    alert("Fitur pembelajaran akan segera tersedia!");
+}
+</script>
+
+</body>
+</html>
